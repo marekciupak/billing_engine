@@ -15,6 +15,9 @@ Bundler/OrderedGems:
 Documentation:
   Enabled: false
 
+Layout/IndentHash:
+  EnforcedStyle: consistent
+
 Layout/SpaceInsideHashLiteralBraces:
   EnforcedStyle: no_space
 

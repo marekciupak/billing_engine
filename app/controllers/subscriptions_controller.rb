@@ -1,7 +1,11 @@
 class SubscriptionsController < ApplicationController
   def create
-    # TODO
+    result = ::Subscription::Creator.new.call(params.permit!.to_h)
 
-    head :created
+    if result.success?
+      head :created
+    else
+      render json: {errors: result.errors}, status: :bad_request
+    end
   end
 end

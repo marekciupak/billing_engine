@@ -21,4 +21,25 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
 
     assert_response(201)
   end
+
+  test 'can get errors in the response' do
+    post '/subscriptions', params: {
+      shipping_address: {
+        line1: 'Bilbo Baggins',
+        line2: 'Bag End, at the end of Bagshot Row',
+      },
+      plan: 'bronze_box',
+    }
+
+    assert_response(400)
+    assert_equal({
+      'errors' => {
+        'shipping_address' => {
+          'zip_code' => ['is missing'],
+          'city' => ['is missing'],
+        },
+        'credit_card' => ['is missing'],
+      },
+    }, JSON.parse(response.body))
+  end
 end
