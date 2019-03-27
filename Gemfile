@@ -18,7 +18,8 @@ group :development, :test do
   gem 'bundler-audit', require: false
   gem 'brakeman', require: false
 
-  gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
+  gem 'pry-rails'
+  gem 'awesome_print'
 end
 
 group :development do
