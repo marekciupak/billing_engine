@@ -9,6 +9,8 @@ end
 
 module Subscription
   class Creator
+    InvalidPlanError = Class.new(StandardError)
+
     def initialize(payment_gateway_client: ::Fakepay::Client.new)
       @payment_gateway_client = payment_gateway_client
     end
@@ -48,7 +50,7 @@ module Subscription
       when 'bronze_box' then '1999'
       when 'silver_box' then '4900'
       when 'gold_box' then '9900'
-      else raise StandardError, 'Invalid plan'
+      else raise InvalidPlanError, 'Invalid plan'
       end
     end
   end
