@@ -38,6 +38,10 @@ jobs:
           command: bin/rails db:schema:load --trace
 
       - run:
+          name: Rubocop
+          command: |
+            bin/bundle exec rubocop --config ./.rubocop.yml
+      - run:
           name: Minitest
           command: |
             bin/bundle exec rake test \
