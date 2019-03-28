@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Subscriptions
-  class CreatorTest < Minitest::Test
+  class CreatorTest < ActiveSupport::TestCase
     def setup
       @payment_gateway_client = stub('payment_gateway_client')
       @subject = Creator.new(payment_gateway_client: @payment_gateway_client)
@@ -31,7 +31,7 @@ module Subscriptions
       @payment_gateway_client
         .stubs(:charge_by_credit_card)
         .with { |args| assert_equal('1999', args[:amount]) }
-        .returns(::Result.new(true))
+        .returns(::Result.new(true, data: '12345123'))
 
       result = @subject.call(
         shipping_address: {

@@ -1,7 +1,7 @@
 require 'test_helper'
 
 module Fakepay
-  class ClientTest < Minitest::Test
+  class ClientTest < ActiveSupport::TestCase
     def setup
       @subject = Client.new(api_key: 'abcd')
     end

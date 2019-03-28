@@ -21,6 +21,7 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
       }
     end
 
+    assert_equal(['bronze_box'], Subscription.all.pluck(:plan))
     assert_response(201)
   end
 

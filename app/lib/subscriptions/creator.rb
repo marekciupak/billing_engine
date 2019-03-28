@@ -30,6 +30,7 @@ module Subscriptions
       )
 
       if result.success?
+        Subscription.create!(plan: form.plan.to_sym, token: result.data)
         Result.new(true)
       else
         Result.new(false, errors: result.errors)
@@ -37,10 +38,10 @@ module Subscriptions
     end
 
     def amount(plan)
-      case plan
-      when 'bronze_box' then '1999'
-      when 'silver_box' then '4900'
-      when 'gold_box' then '9900'
+      case plan.to_sym
+      when :bronze_box then '1999'
+      when :silver_box then '4900'
+      when :gold_box then '9900'
       else raise InvalidPlanError, 'Invalid plan'
       end
     end
