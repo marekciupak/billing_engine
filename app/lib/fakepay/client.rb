@@ -16,14 +16,12 @@ module Fakepay
         expiration_year: expiration_year,
         zip_code: zip_code,
       )
+      handle_response(response)
+    end
 
-      body = JSON.parse(response.body)
-
-      if response.status == 200 && body['success']
-        ::Result.new(true, data: body['token'])
-      else
-        ::Result.new(false)
-      end
+    def charge_by_token(amount:, token:)
+      response = send_request(amount: amount, token: token)
+      handle_response(response)
     end
 
     private
@@ -38,6 +36,16 @@ module Fakepay
           'Authorization' => "Token token=#{@api_key}",
         },
       )
+    end
+
+    def handle_response(response)
+      body = JSON.parse(response.body)
+
+      if response.status == 200 && body['success']
+        ::Result.new(true, data: body['token'])
+      else
+        ::Result.new(false)
+      end
     end
   end
 end
