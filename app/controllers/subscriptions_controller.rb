@@ -1,6 +1,6 @@
 class SubscriptionsController < ApplicationController
   def create
-    result = ::Subscription::Creator.new.call(params.permit!.to_h)
+    result = ::Subscriptions::Creator.new.call(params.permit!.to_h)
 
     if result.success?
       head :created

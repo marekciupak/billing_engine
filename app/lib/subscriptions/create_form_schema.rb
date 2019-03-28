@@ -1,4 +1,4 @@
-module Subscription
+module Subscriptions
   CreateFormSchema = Dry::Validation.Params do
     required(:shipping_address).schema do
       required(:line1).filled

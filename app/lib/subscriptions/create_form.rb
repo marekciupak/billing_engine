@@ -1,4 +1,4 @@
-module Subscription
+module Subscriptions
   class CreateForm < Dry::Struct
     attribute :shipping_address do
       attribute :line1, Types::Strict::String

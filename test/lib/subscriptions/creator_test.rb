@@ -1,6 +1,6 @@
 require 'test_helper'
 
-module Subscription
+module Subscriptions
   class CreatorTest < Minitest::Test
     def setup
       @payment_gateway_client = stub('payment_gateway_client')

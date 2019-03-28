@@ -1,4 +1,4 @@
-module Subscription
+module Subscriptions
   class Creator
     InvalidPlanError = Class.new(StandardError)
 
