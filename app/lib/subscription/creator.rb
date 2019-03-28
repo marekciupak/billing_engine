@@ -1,12 +1,3 @@
-# TODO
-module Fakepay
-  class Client
-    def charge_by_credit_card(*)
-      ::Result.new(true)
-    end
-  end
-end
-
 module Subscription
   class Creator
     InvalidPlanError = Class.new(StandardError)

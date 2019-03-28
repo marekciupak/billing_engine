@@ -15,6 +15,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'dry-validation'
 gem 'dry-struct'
+gem 'excon'
 
 group :development, :test do
   gem 'rubocop', require: false
@@ -36,6 +37,8 @@ end
 
 group :test do
   gem 'minitest-ci'
+  gem 'webmock'
+  gem 'vcr'
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
