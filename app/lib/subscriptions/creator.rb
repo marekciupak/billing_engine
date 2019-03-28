@@ -30,7 +30,7 @@ module Subscriptions
       )
 
       if result.success?
-        Subscription.create!(plan: form.plan.to_sym, token: result.data)
+        store_subscription_in_db(form: form, token: result.data)
         Result.new(true)
       else
         Result.new(false, errors: result.errors)
@@ -43,6 +43,19 @@ module Subscriptions
       when :silver_box then '4900'
       when :gold_box then '9900'
       else raise InvalidPlanError, 'Invalid plan'
+      end
+    end
+
+    def store_subscription_in_db(form:, token:)
+      ActiveRecord::Base.transaction do
+        subscription = Subscription.create!(plan: form.plan.to_sym, token: token)
+        Address.create!(
+          subscription: subscription,
+          line1: form.shipping_address.line1,
+          line2: form.shipping_address.line2,
+          zip_code: form.shipping_address.zip_code,
+          city: form.shipping_address.city,
+        )
       end
     end
   end

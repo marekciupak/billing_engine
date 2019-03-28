@@ -51,7 +51,15 @@ module Subscriptions
       )
 
       assert_equal(true, result.success?)
-      # TODO: assert db record
+
+      subscription = Subscription.first
+      address = Address.find_by(subscription: subscription)
+      assert_equal(1, Subscription.count)
+      assert_equal('bronze_box', subscription.plan)
+      assert_equal('Bilbo Baggins', address.line1)
+      assert_equal('Bag End, at the end of Bagshot Row', address.line2)
+      assert_equal('12-345', address.zip_code)
+      assert_equal('Hobbiton', address.city)
     end
 
     def test_failed_credit_card_transaction

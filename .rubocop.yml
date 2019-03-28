@@ -56,6 +56,9 @@ Metrics/PerceivedComplexity:
 Rails:
   Enabled: true
 
+Rails/NotNullColumn:
+  Enabled: false
+
 Style/DoubleNegation:
   Enabled: false
 
