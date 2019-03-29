@@ -9,14 +9,17 @@ module Subscriptions
 
     def call(billing_date)
       subscriptions = Subscription.where(renewed_at: billing_date - SUBSCRIPTION_PERIOD).all
+      subscriptions.each { |subscription| renew_subscription(subscription, billing_date) }
+    end
 
-      subscriptions.each do |subscription|
-        amount = @plan_amount_calculator.call(subscription.plan)
-        result = @payment_gateway_client.charge_by_token(amount: amount, token: subscription.token)
+    private
 
-        if result.success?
-          subscription.update!(renewed_at: billing_date)
-        end
+    def renew_subscription(subscription, billing_date)
+      amount = @plan_amount_calculator.call(subscription.plan)
+      result = @payment_gateway_client.charge_by_token(amount: amount, token: subscription.token)
+
+      if result.success?
+        subscription.update!(renewed_at: billing_date)
       end
     end
   end
