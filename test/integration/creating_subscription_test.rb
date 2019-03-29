@@ -45,4 +45,55 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
       },
     }, JSON.parse(response.body))
   end
+
+  test 'can get invalid Fakepay API key error' do
+    Rails.application.credentials.stubs(:fakepay_client_api_key).returns('a_bad_token')
+
+    assert_raises Fakepay::Client::InvalidApiKey do
+      VCR.use_cassette('attempting a purchase with invalid API credentials') do
+        post '/subscriptions', params: {
+          shipping_address: {
+            line1: 'Bilbo Baggins',
+            line2: 'Bag End, at the end of Bagshot Row',
+            zip_code: '12345',
+            city: 'Hobbiton',
+          },
+          credit_card: {
+            numer: '4242424242424242',
+            expiration_month: '06',
+            expiration_year: '2021',
+            cvv: '123',
+            zip_code: '12345',
+          },
+          plan: 'bronze_box',
+        }
+      end
+    end
+  end
+
+  test 'can get invalid card number error' do
+    VCR.use_cassette('attempting a purchase with an invalid card number') do
+      post '/subscriptions', params: {
+        shipping_address: {
+          line1: 'Bilbo Baggins',
+          line2: 'Bag End, at the end of Bagshot Row',
+          zip_code: '12345',
+          city: 'Hobbiton',
+        },
+        credit_card: {
+          numer: '4242424242424241',
+          expiration_month: '06',
+          expiration_year: '2021',
+          cvv: '123',
+          zip_code: '12345',
+        },
+        plan: 'bronze_box',
+      }
+    end
+
+    assert_response(400)
+    assert_equal({
+      'errors' => ['Invalid credit card number'],
+    }, JSON.parse(response.body))
+  end
 end
