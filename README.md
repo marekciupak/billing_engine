@@ -51,6 +51,8 @@ bin/rails server
 
 ### Create a subscription
 
+For id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+
 ```shell
 # Valid request:
 curl -X POST \
@@ -62,8 +64,6 @@ curl -X POST \
 # HTTP Status: 201 Created
 ```
 
-For id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
-
 ```shell
 # Invalid request:
 curl -X POST \
@@ -74,6 +74,12 @@ curl -X POST \
 # Response:
 # HTTP Status: 400 Bad Request
 {"errors":{"credit_card":{"zip_code":["is missing"]},"plan":["is missing"]}}
+```
+
+```shell
+# Sample response in case of the network problem:
+# HTTP Status: 500 Internal Server Error
+{"errors":["getaddrinfo: nodename nor servname provided, or not known (SocketError)"]}
 ```
 
 ### Renew subscriptions
