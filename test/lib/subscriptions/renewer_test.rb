@@ -11,7 +11,9 @@ module Subscriptions
       Subscription.create!(plan: :silver_box, token: 'qwerty1', renewed_at: Date.new(2018, 12, 30))
       Subscription.create!(plan: :silver_box, token: 'qwerty2', renewed_at: Date.new(2019, 1, 1))
 
-      @subject.call(Date.new(2019, 1, 30))
+      results = @subject.call(Date.new(2019, 1, 30))
+
+      assert_equal({}, results)
     end
 
     def test_renew_subscriptions
@@ -28,11 +30,12 @@ module Subscriptions
         .with { |args| args[:amount] == '9900' && args[:token] == 'qwerty3' }
         .returns(::Result.new(false))
 
-      @subject.call(Date.new(2019, 1, 30))
+      results = @subject.call(Date.new(2019, 1, 30))
 
       assert_equal(Date.new(2018, 12, 30), subscription1.reload.renewed_at)
       assert_equal(Date.new(2019, 1, 30), subscription2.reload.renewed_at)
       assert_equal(Date.new(2018, 12, 31), subscription3.reload.renewed_at)
+      assert_equal({subscription2.id => true, subscription3.id => false}, results)
     end
   end
 end

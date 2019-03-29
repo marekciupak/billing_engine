@@ -2,13 +2,16 @@ module Fakepay
   class Client
     URL = 'https://www.fakepay.io/purchase'.freeze
 
+    NetworkConnectionError = Class.new(StandardError)
+    InvalidApiKey = Class.new(StandardError)
+
     def initialize(api_key: Rails.application.credentials.fakepay_client_api_key, http_client: Excon)
       @api_key = api_key
       @http_client = http_client
     end
 
     def charge_by_credit_card(amount:, card_number:, cvv:, expiration_month:, expiration_year:, zip_code:)
-      response = send_request(
+      send_request(
         amount: amount,
         card_number: card_number,
         cvv: cvv,
@@ -16,18 +19,16 @@ module Fakepay
         expiration_year: expiration_year,
         zip_code: zip_code,
       )
-      handle_response(response)
     end
 
     def charge_by_token(amount:, token:)
-      response = send_request(amount: amount, token: token)
-      handle_response(response)
+      send_request(amount: amount, token: token)
     end
 
     private
 
     def send_request(payload)
-      @http_client.post(
+      response = @http_client.post(
         URL,
         body: payload.to_json,
         headers: {
@@ -36,6 +37,12 @@ module Fakepay
           'Authorization' => "Token token=#{@api_key}",
         },
       )
+
+      raise InvalidApiKey if response.status == 401
+
+      handle_response(response)
+    rescue Excon::Error => e
+      raise NetworkConnectionError, e.message
     end
 
     def handle_response(response)

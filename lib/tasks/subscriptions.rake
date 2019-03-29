@@ -6,6 +6,18 @@ namespace :subscriptions do
     day = args.fetch(:day).to_i
 
     date = Date.new(year, month, day)
-    ::Subscriptions::Renewer.new.call(date)
+
+    Rails.logger.info "Renewing subscriptions on #{date}..."
+    results = ::Subscriptions::Renewer.new.call(date)
+
+    results.each do |subscription_id, is_successful|
+      if is_successful
+        Rails.logger.info "Subscription ##{subscription_id} has been renewed successfully on #{date}."
+      else
+        Rails.logger.warn "Payment for subscription ##{subscription_id} failed on #{date}."
+      end
+    end
+
+    Rails.logger.info 'Done.'
   end
 end

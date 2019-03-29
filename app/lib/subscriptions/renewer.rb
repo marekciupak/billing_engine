@@ -9,7 +9,7 @@ module Subscriptions
 
     def call(billing_date)
       subscriptions = Subscription.where(renewed_at: billing_date - SUBSCRIPTION_PERIOD).all
-      subscriptions.each { |subscription| renew_subscription(subscription, billing_date) }
+      subscriptions.map { |subscription| [subscription.id, renew_subscription(subscription, billing_date)] }.to_h
     end
 
     private
@@ -20,6 +20,9 @@ module Subscriptions
 
       if result.success?
         subscription.update!(renewed_at: billing_date)
+        true
+      else
+        false
       end
     end
   end
