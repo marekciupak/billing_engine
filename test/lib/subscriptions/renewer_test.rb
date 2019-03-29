@@ -8,8 +8,8 @@ module Subscriptions
     end
 
     def test_no_subscriptions_to_renew
-      Subscription.create!(plan: :silver_box, token: 'qwerty1', renewed_at: Date.new(2018, 12, 30))
-      Subscription.create!(plan: :silver_box, token: 'qwerty2', renewed_at: Date.new(2019, 1, 1))
+      create(:subscription, plan: :silver_box, token: 'qwerty1', renewed_at: Date.new(2018, 12, 30))
+      create(:subscription, plan: :silver_box, token: 'qwerty2', renewed_at: Date.new(2019, 1, 1))
 
       results = @subject.call(Date.new(2019, 1, 30))
 
@@ -17,9 +17,9 @@ module Subscriptions
     end
 
     def test_renew_subscriptions
-      subscription1 = Subscription.create!(plan: :silver_box, token: 'qwerty1', renewed_at: Date.new(2018, 12, 30))
-      subscription2 = Subscription.create!(plan: :silver_box, token: 'qwerty2', renewed_at: Date.new(2018, 12, 31))
-      subscription3 = Subscription.create!(plan: :gold_box, token: 'qwerty3', renewed_at: Date.new(2018, 12, 31))
+      subscription1 = create(:subscription, plan: :silver_box, token: 'qwerty1', renewed_at: Date.new(2018, 12, 30))
+      subscription2 = create(:subscription, plan: :silver_box, token: 'qwerty2', renewed_at: Date.new(2018, 12, 31))
+      subscription3 = create(:subscription, plan: :gold_box, token: 'qwerty3', renewed_at: Date.new(2018, 12, 31))
 
       @payment_gateway_client
         .stubs(:charge_by_token)
