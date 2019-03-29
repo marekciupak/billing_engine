@@ -19,16 +19,7 @@ module Subscriptions
     private
 
     def create_subscription(form)
-      amount = @plan_amount_calculator.call(form.plan)
-
-      result = @payment_gateway_client.charge_by_credit_card(
-        amount: amount,
-        card_number: form.credit_card.numer,
-        cvv: form.credit_card.cvv,
-        expiration_month: form.credit_card.expiration_month,
-        expiration_year: form.credit_card.expiration_year,
-        zip_code: form.credit_card.zip_code,
-      )
+      result = charge(form)
 
       if result.success?
         store_subscription_in_db(form: form, token: result.data)
@@ -36,6 +27,19 @@ module Subscriptions
       else
         Result.new(false, errors: result.errors)
       end
+    end
+
+    def charge(form)
+      amount = @plan_amount_calculator.call(form.plan)
+
+      @payment_gateway_client.charge_by_credit_card(
+        amount: amount,
+        card_number: form.credit_card.numer,
+        cvv: form.credit_card.cvv,
+        expiration_month: form.credit_card.expiration_month,
+        expiration_year: form.credit_card.expiration_year,
+        zip_code: form.credit_card.zip_code,
+      )
     end
 
     def store_subscription_in_db(form:, token:)
