@@ -46,3 +46,39 @@ bin/bundle exec brakeman -q --summary
 ```shell
 bin/rails server
 ```
+
+## API
+
+### Create a subscription
+
+```shell
+# Valid request:
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"shipping_address":{"line1":"Bilbo Baggins","line2":"Bag End, at the end of Bagshot Row","zip_code":"12345","city":"Hobbiton"}, "credit_card":{"numer":"4242424242424242","expiration_month":"06","expiration_year":"2021","cvv":"123","zip_code":"12345"}, "plan":"bronze_box"}' \
+  http://localhost:3000/subscriptions
+
+# Response:
+# HTTP Status: 201 Created
+```
+
+Fox id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+
+```shell
+# Invalid request:
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"shipping_address":{"line1":"Bilbo Baggins","line2":"Bag End, at the end of Bagshot Row","zip_code":"12345","city":"Hobbiton"}, "credit_card":{"numer":"4242424242424242","expiration_month":"06","expiration_year":"2021","cvv":"123"}}' \
+  http://localhost:3000/subscriptions
+
+# Response:
+# HTTP Status: 400 Bad Request
+{"errors":{"credit_card":{"zip_code":["is missing"]},"plan":["is missing"]}}
+```
+
+### Renew subscriptions
+
+```shell
+# Renew any subscriptions that should be billed on 30 Jan 2019
+bin/rake subscriptions:renew[2019,1,30]
+```
