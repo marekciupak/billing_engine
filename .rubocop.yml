@@ -65,6 +65,9 @@ Style/DoubleNegation:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 Style/SymbolArray:
   EnforcedStyle: brackets
 

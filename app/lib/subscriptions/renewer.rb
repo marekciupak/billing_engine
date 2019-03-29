@@ -9,10 +9,14 @@ module Subscriptions
     end
 
     def call(billing_date)
-      subscriptions = Subscription.where(created_at: billing_date - SUBSCRIPTION_PERIOD).all
+      subscriptions = Subscription.where(renewed_at: billing_date - SUBSCRIPTION_PERIOD).all
 
       subscriptions.each do |subscription|
-        @payment_gateway_client.charge_by_token(amount: amount(subscription.plan), token: subscription.token)
+        result = @payment_gateway_client.charge_by_token(amount: amount(subscription.plan), token: subscription.token)
+
+        if result.success?
+          subscription.update!(renewed_at: billing_date)
+        end
       end
     end
 

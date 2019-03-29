@@ -48,7 +48,7 @@ module Subscriptions
 
     def store_subscription_in_db(form:, token:)
       ActiveRecord::Base.transaction do
-        subscription = Subscription.create!(plan: form.plan.to_sym, token: token)
+        subscription = Subscription.create!(plan: form.plan.to_sym, token: token, renewed_at: Time.zone.today)
         Address.create!(
           subscription: subscription,
           line1: form.shipping_address.line1,
