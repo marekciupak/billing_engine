@@ -1,14 +1,12 @@
 module Subscriptions
   class Renewer
-    SUBSCRIPTION_PERIOD = 30.days
-
     def initialize(plan_amount_calculator: PlanAmountCalculator.new, payment_gateway_client: ::Fakepay::Client.new)
       @plan_amount_calculator = plan_amount_calculator
       @payment_gateway_client = payment_gateway_client
     end
 
     def call(billing_date)
-      subscriptions = Subscription.where(renewed_at: billing_date - SUBSCRIPTION_PERIOD).all
+      subscriptions = Subscription.where(renewed_at: billing_date - Subscription::SUBSCRIPTION_PERIOD).all
       subscriptions.map { |subscription| [subscription.id, renew_subscription(subscription, billing_date)] }.to_h
     end
 
