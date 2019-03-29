@@ -62,7 +62,7 @@ module Fakepay
         ::Result.new(true, data: body['token'])
       else
         error_message = ERROR_CODES.fetch(body['error_code'])
-        ::Result.new(false, errors: [error_message])
+        ::Result.new(false, errors: {payment: error_message})
       end
     end
   end

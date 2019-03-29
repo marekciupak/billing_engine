@@ -63,7 +63,9 @@ module Subscriptions
     end
 
     def test_failed_credit_card_transaction
-      @payment_gateway_client.stubs(:charge_by_credit_card).returns(::Result.new(false, errors: [:insufficient_funds]))
+      @payment_gateway_client.stubs(:charge_by_credit_card).returns(
+        ::Result.new(false, errors: {payment: :insufficient_funds}),
+      )
 
       result = @subject.call(
         shipping_address: {
@@ -83,7 +85,7 @@ module Subscriptions
       )
 
       assert_equal(false, result.success?)
-      assert_equal([:insufficient_funds], result.errors)
+      assert_equal({payment: :insufficient_funds}, result.errors)
     end
   end
 end

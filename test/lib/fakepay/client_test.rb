@@ -76,7 +76,7 @@ module Fakepay
       )
 
       assert_equal(false, result.success?)
-      assert_equal(['Invalid credit card number'], result.errors)
+      assert_equal({payment: 'Invalid credit card number'}, result.errors)
     end
   end
 end

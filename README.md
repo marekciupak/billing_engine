@@ -77,9 +77,9 @@ curl -X POST \
 ```
 
 ```shell
-# Sample response in case of the network problem:
+# Response in case of the network problem between the app and Fakepay (check the details of the error in the logs):
 # HTTP Status: 500 Internal Server Error
-{"errors":["getaddrinfo: nodename nor servname provided, or not known (SocketError)"]}
+{"errors":{"internal":"Something went wrong!"}}
 ```
 
 ### Renew subscriptions

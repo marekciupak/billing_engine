@@ -93,7 +93,7 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
 
     assert_response(400)
     assert_equal({
-      'errors' => ['Invalid credit card number'],
+      'errors' => {'payment' => 'Invalid credit card number'},
     }, JSON.parse(response.body))
   end
 end
