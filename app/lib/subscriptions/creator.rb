@@ -1,8 +1,7 @@
 module Subscriptions
   class Creator
-    InvalidPlanError = Class.new(StandardError)
-
-    def initialize(payment_gateway_client: ::Fakepay::Client.new)
+    def initialize(plan_amount_calculator: PlanAmountCalculator.new, payment_gateway_client: ::Fakepay::Client.new)
+      @plan_amount_calculator = plan_amount_calculator
       @payment_gateway_client = payment_gateway_client
     end
 
@@ -20,8 +19,10 @@ module Subscriptions
     private
 
     def create_subscription(form)
+      amount = @plan_amount_calculator.call(form.plan)
+
       result = @payment_gateway_client.charge_by_credit_card(
-        amount: amount(form.plan),
+        amount: amount,
         card_number: form.credit_card.numer,
         cvv: form.credit_card.cvv,
         expiration_month: form.credit_card.expiration_month,
@@ -34,15 +35,6 @@ module Subscriptions
         Result.new(true)
       else
         Result.new(false, errors: result.errors)
-      end
-    end
-
-    def amount(plan)
-      case plan.to_sym
-      when :bronze_box then '1999'
-      when :silver_box then '4900'
-      when :gold_box then '9900'
-      else raise InvalidPlanError, 'Invalid plan'
       end
     end
 
