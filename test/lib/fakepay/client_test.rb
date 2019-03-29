@@ -51,5 +51,32 @@ module Fakepay
       assert(result.success?)
       assert_equal('1234512345', result.data)
     end
+
+    def test_handeling_invalid_card_number_response
+      stub_request(:post, 'https://www.fakepay.io/purchase').with(
+        body: '{"amount":"1000","card_number":"4242424242424241","cvv":"123","expiration_month":"01",'\
+              '"expiration_year":"2024","zip_code":"10045"}',
+        headers: {
+          'Content-Type' => 'application/json',
+          'Accept' => 'application/json',
+          'Authorization' => 'Token token=abcd',
+        },
+      ).to_return(
+        status: 422,
+        body: '{"token":"123456","success":false,"error_code":1000001}',
+      )
+
+      result = @subject.charge_by_credit_card(
+        amount: '1000',
+        card_number: '4242424242424241',
+        cvv: '123',
+        expiration_month: '01',
+        expiration_year: '2024',
+        zip_code: '10045',
+      )
+
+      assert_equal(false, result.success?)
+      assert_equal(['Invalid credit card number'], result.errors)
+    end
   end
 end
