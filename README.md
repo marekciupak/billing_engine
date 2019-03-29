@@ -62,7 +62,7 @@ curl -X POST \
 # HTTP Status: 201 Created
 ```
 
-Fox id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+For id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
 
 ```shell
 # Invalid request:
