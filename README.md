@@ -93,10 +93,11 @@ bin/rake verbose subscriptions:renew[2019,4,30]
 Sample output:
 
 ```
-Running via Spring preloader in process 30103
-I, [2019-03-30T10:54:28.409806 #30103]  INFO -- : Renewing subscriptions on 2019-04-30...
-I, [2019-03-30T10:54:29.083319 #30103]  INFO -- : Subscription #4 has been renewed successfully on 2019-04-30.
-I, [2019-03-30T10:54:29.083579 #30103]  INFO -- : Done.
+Running via Spring preloader in process 31268
+I, [2019-03-30T11:08:50.337220 #31268]  INFO -- : Renewing subscriptions on 2019-04-30...
+I, [2019-03-30T11:08:51.449959 #31268]  INFO -- : Subscription #4 has been renewed successfully on 2019-04-30.
+W, [2019-03-30T11:08:51.450431 #31268]  WARN -- : Payment for subscription #5 failed on 2019-04-30.
+I, [2019-03-30T11:08:51.450881 #31268]  INFO -- : Done.
 ```
 
 For subscriptions that are assigned to a bill date on the last day of the month, if the day does not exist for the next
