@@ -14,6 +14,7 @@ module Fakepay
 
     NetworkConnectionError = Class.new(StandardError)
     InvalidApiKey = Class.new(StandardError)
+    InvalidParams = Class.new(StandardError)
 
     def initialize(api_key: Rails.application.credentials.fakepay_client_api_key, http_client: Excon)
       @api_key = api_key
@@ -61,7 +62,11 @@ module Fakepay
       if response.status == 200 && body['success']
         ::Result.new(true, data: body['token'])
       else
-        error_message = ERROR_CODES.fetch(body['error_code'])
+        error_code = body['error_code']
+
+        raise InvalidParams if error_code == 1_000_008
+
+        error_message = ERROR_CODES.fetch(error_code)
         ::Result.new(false, errors: {payment: error_message})
       end
     end
