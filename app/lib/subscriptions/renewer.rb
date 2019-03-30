@@ -17,7 +17,7 @@ module Subscriptions
       result = @payment_gateway_client.charge_by_token(amount: amount, token: subscription.token)
 
       if result.success?
-        subscription.update!(expires_on: billing_date + Subscription::SUBSCRIPTION_PERIOD)
+        subscription.update!(expires_on: billing_date.next_month)
         true
       else
         false

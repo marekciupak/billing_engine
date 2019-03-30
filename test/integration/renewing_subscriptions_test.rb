@@ -15,7 +15,7 @@ class RenewingSubscriptionsTest < ActiveSupport::TestCase
       execute_rake_task('subscriptions:renew', '2019', '1', '30')
     end
 
-    assert_equal(Date.new(2019, 3, 1), subscription1.reload.expires_on)
+    assert_equal(Date.new(2019, 2, 28), subscription1.reload.expires_on)
     assert_equal(Date.new(2019, 1, 31), subscription2.reload.expires_on)
   end
 

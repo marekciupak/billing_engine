@@ -47,7 +47,7 @@ module Subscriptions
         subscription = Subscription.create!(
           plan: form.plan.to_sym,
           token: token,
-          expires_on: Time.zone.today + Subscription::SUBSCRIPTION_PERIOD,
+          expires_on: Time.zone.today.next_month,
         )
         Address.create!(
           subscription: subscription,

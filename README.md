@@ -88,3 +88,6 @@ curl -X POST \
 # Renew any subscriptions that should be billed on 30 Jan 2019
 bin/rake verbose subscriptions:renew[2019,1,30]
 ```
+
+For subscriptions that are assigned to a bill date on the last day of the month, if the day does not exist for the next
+bill date, the engine will use the last day of the month (e.g. for January 31st, next bill date will be February 28th).

@@ -32,7 +32,7 @@ module Subscriptions
 
       results = @subject.call(Date.new(2019, 1, 30))
 
-      assert_equal(Date.new(2019, 3, 1), subscription1.reload.expires_on)
+      assert_equal(Date.new(2019, 2, 28), subscription1.reload.expires_on)
       assert_equal(Date.new(2019, 1, 30), subscription2.reload.expires_on)
       assert_equal(Date.new(2019, 1, 31), subscription3.reload.expires_on)
       assert_equal({subscription1.id => true, subscription2.id => false}, results)
