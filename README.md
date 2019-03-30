@@ -78,6 +78,12 @@ curl -X POST \
 ```
 
 ```shell
+# Sample response in case of problems with the payment:
+# HTTP Status: 400 Bad Request
+{"errors":{"payment":"CVV failure"}}
+```
+
+```shell
 # Response in case of the network problem between the app and Fakepay (check the details of the error in the logs):
 # HTTP Status: 500 Internal Server Error
 {"errors":{"internal":"Something went wrong!"}}
