@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2019_03_29_070612) do
     t.string "token", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "renewed_at", null: false
+    t.date "expires_on", null: false
   end
 
   add_foreign_key "addresses", "subscriptions"

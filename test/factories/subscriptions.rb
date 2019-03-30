@@ -2,6 +2,6 @@ FactoryBot.define do
   factory :subscription do
     plan { Subscription.plans.keys.sample }
     token { SecureRandom.hex }
-    renewed_at { rand(1.year).seconds.ago.to_date }
+    expires_on { rand(1.month).seconds.from_now.to_date }
   end
 end

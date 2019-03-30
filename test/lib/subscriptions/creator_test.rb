@@ -33,22 +33,24 @@ module Subscriptions
         .with { |args| assert_equal('1999', args[:amount]) }
         .returns(::Result.new(true, data: '12345123'))
 
-      result = @subject.call(
-        shipping_address: {
-          line1: 'Bilbo Baggins',
-          line2: 'Bag End, at the end of Bagshot Row',
-          zip_code: '12-345',
-          city: 'Hobbiton',
-        },
-        credit_card: {
-          numer: '4242424242424242',
-          expiration_month: '06',
-          expiration_year: '2021',
-          cvv: '123',
-          zip_code: '12-345',
-        },
-        plan: 'bronze_box',
-      )
+      result = travel_to(Date.new(2019, 1, 1)) do
+        @subject.call(
+          shipping_address: {
+            line1: 'Bilbo Baggins',
+            line2: 'Bag End, at the end of Bagshot Row',
+            zip_code: '12-345',
+            city: 'Hobbiton',
+          },
+          credit_card: {
+            numer: '4242424242424242',
+            expiration_month: '06',
+            expiration_year: '2021',
+            cvv: '123',
+            zip_code: '12-345',
+          },
+          plan: 'bronze_box',
+        )
+      end
 
       assert_equal(true, result.success?)
 
@@ -56,6 +58,7 @@ module Subscriptions
       address = Address.find_by(subscription: subscription)
       assert_equal(1, Subscription.count)
       assert_equal('bronze_box', subscription.plan)
+      assert_equal(Date.new(2019, 1, 31), subscription.expires_on)
       assert_equal('Bilbo Baggins', address.line1)
       assert_equal('Bag End, at the end of Bagshot Row', address.line2)
       assert_equal('12-345', address.zip_code)

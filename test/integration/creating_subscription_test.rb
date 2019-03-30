@@ -2,26 +2,28 @@ require 'test_helper'
 
 class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
   test 'can create subscription' do
-    VCR.use_cassette('a successful purchase') do
-      post '/subscriptions', params: {
-        shipping_address: {
-          line1: 'Bilbo Baggins',
-          line2: 'Bag End, at the end of Bagshot Row',
-          zip_code: '12345',
-          city: 'Hobbiton',
-        },
-        credit_card: {
-          numer: '4242424242424242',
-          expiration_month: '06',
-          expiration_year: '2021',
-          cvv: '123',
-          zip_code: '12345',
-        },
-        plan: 'bronze_box',
-      }
+    travel_to(Date.new(2019, 2, 1)) do
+      VCR.use_cassette('a successful purchase') do
+        post '/subscriptions', params: {
+          shipping_address: {
+            line1: 'Bilbo Baggins',
+            line2: 'Bag End, at the end of Bagshot Row',
+            zip_code: '12345',
+            city: 'Hobbiton',
+          },
+          credit_card: {
+            numer: '4242424242424242',
+            expiration_month: '06',
+            expiration_year: '2021',
+            cvv: '123',
+            zip_code: '12345',
+          },
+          plan: 'bronze_box',
+        }
+      end
     end
 
-    assert_equal(['bronze_box'], Subscription.all.pluck(:plan))
+    assert_equal([['bronze_box', Date.new(2019, 3, 3)]], Subscription.all.pluck(:plan, :expires_on))
     assert_response(201)
   end
 

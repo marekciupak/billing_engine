@@ -6,7 +6,7 @@ module Subscriptions
     end
 
     def call(billing_date)
-      subscriptions = Subscription.where(renewed_at: billing_date - Subscription::SUBSCRIPTION_PERIOD).all
+      subscriptions = Subscription.where(expires_on: billing_date).all
       subscriptions.map { |subscription| [subscription.id, renew_subscription(subscription, billing_date)] }.to_h
     end
 
@@ -17,7 +17,7 @@ module Subscriptions
       result = @payment_gateway_client.charge_by_token(amount: amount, token: subscription.token)
 
       if result.success?
-        subscription.update!(renewed_at: billing_date)
+        subscription.update!(expires_on: billing_date + Subscription::SUBSCRIPTION_PERIOD)
         true
       else
         false

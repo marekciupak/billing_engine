@@ -21,7 +21,7 @@ http_interactions:
       Server:
       - Cowboy
       Date:
-      - Thu, 28 Mar 2019 00:00:00 GMT
+      - Fri, 01 Feb 2019 00:00:00 GMT
       Connection:
       - keep-alive
       X-Frame-Options:
@@ -52,5 +52,5 @@ http_interactions:
       encoding: ASCII-8BIT
       string: '{"token":"1f98fab6dd2e7364783c8e1a586336","success":true,"error_code":null}'
     http_version:
-  recorded_at: Thu, 28 Mar 2019 00:00:00 GMT
+  recorded_at: Fri, 01 Feb 2019 00:00:00 GMT
 recorded_with: VCR 4.0.0
