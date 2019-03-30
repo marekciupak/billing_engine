@@ -22,8 +22,8 @@ module Subscriptions
       result = charge(form)
 
       if result.success?
-        store_subscription_in_db(form: form, token: result.data)
-        Result.new(true)
+        subscription = store_subscription_in_db(form: form, token: result.data)
+        Result.new(true, data: subscription)
       else
         Result.new(false, errors: result.errors)
       end
@@ -56,6 +56,8 @@ module Subscriptions
           zip_code: form.shipping_address.zip_code,
           city: form.shipping_address.city,
         )
+
+        subscription
       end
     end
   end

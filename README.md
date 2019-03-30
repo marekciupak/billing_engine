@@ -62,6 +62,7 @@ curl -X POST \
 
 # Response:
 # HTTP Status: 201 Created
+{"subscription":{"id":4,"expires_on":"2019-04-30"}}
 ```
 
 ```shell
@@ -86,7 +87,16 @@ curl -X POST \
 
 ```shell
 # Renew any subscriptions that should be billed on 30 Jan 2019
-bin/rake verbose subscriptions:renew[2019,1,30]
+bin/rake verbose subscriptions:renew[2019,4,30]
+```
+
+Sample output:
+
+```
+Running via Spring preloader in process 30103
+I, [2019-03-30T10:54:28.409806 #30103]  INFO -- : Renewing subscriptions on 2019-04-30...
+I, [2019-03-30T10:54:29.083319 #30103]  INFO -- : Subscription #4 has been renewed successfully on 2019-04-30.
+I, [2019-03-30T10:54:29.083579 #30103]  INFO -- : Done.
 ```
 
 For subscriptions that are assigned to a bill date on the last day of the month, if the day does not exist for the next

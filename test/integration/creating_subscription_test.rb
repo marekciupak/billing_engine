@@ -23,8 +23,9 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
       end
     end
 
-    assert_equal([['bronze_box', Date.new(2019, 3, 1)]], Subscription.all.pluck(:plan, :expires_on))
+    assert_equal(1, Subscription.count)
     assert_response(201)
+    assert_equal('2019-03-01', JSON.parse(response.body)['subscription']['expires_on'])
   end
 
   test 'can get errors in the response' do
