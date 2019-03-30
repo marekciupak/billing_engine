@@ -86,7 +86,7 @@ curl -X POST \
 ### Renew subscriptions
 
 ```shell
-# Renew any subscriptions that should be billed on 30 Jan 2019
+# Renew any subscriptions that should be billed on 30 Apr 2019
 bin/rake verbose subscriptions:renew[2019,4,30]
 ```
 
