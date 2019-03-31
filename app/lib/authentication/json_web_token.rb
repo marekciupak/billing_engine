@@ -2,7 +2,7 @@ module Authentication
   class JsonWebToken
     InvalidTokenError = Class.new(StandardError)
 
-    def initialize(secret_key: Rails.application.credentials.jwt_secret_key, algorithm: 'HS256'.freeze)
+    def initialize(secret_key: Rails.application.credentials.jwt_secret_key!, algorithm: 'HS256'.freeze)
       @secret_key = secret_key
       @algorithm = algorithm
     end

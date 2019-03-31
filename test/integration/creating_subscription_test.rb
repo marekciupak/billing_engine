@@ -92,7 +92,7 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
   end
 
   test 'can get invalid Fakepay API key error' do
-    Rails.application.credentials.stubs(:fakepay_client_api_key).returns('a_bad_token')
+    Rails.application.credentials.stubs(:fakepay_client_api_key!).returns('a_bad_token')
 
     assert_raises Fakepay::Client::InvalidApiKey do
       VCR.use_cassette('attempting a purchase with invalid API credentials') do

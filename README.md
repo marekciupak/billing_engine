@@ -26,7 +26,13 @@ Internal API that handles billing for subscriptions to a "box of the month" serv
     git clone git@github.com:marekciupak/billing_engine.git && cd billing_engine
     ```
 
-3. Setup the application and the database:
+3. Set `config/master.key` (replace `XXXXX` with a real key):
+
+    ```shell
+    echo "XXXXX" > config/master.key
+    ```
+
+4. Setup the application and the database:
 
     ```shell
     bin/setup

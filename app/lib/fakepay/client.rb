@@ -16,7 +16,7 @@ module Fakepay
     InvalidApiKey = Class.new(StandardError)
     InvalidParams = Class.new(StandardError)
 
-    def initialize(api_key: Rails.application.credentials.fakepay_client_api_key, http_client: Excon)
+    def initialize(api_key: Rails.application.credentials.fakepay_client_api_key!, http_client: Excon)
       @api_key = api_key
       @http_client = http_client
     end
