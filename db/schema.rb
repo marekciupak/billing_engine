@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_03_31_060014) do
+ActiveRecord::Schema.define(version: 2019_03_31_203719) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -34,6 +34,8 @@ ActiveRecord::Schema.define(version: 2019_03_31_060014) do
     t.date "expires_on", null: false
     t.string "customer_id", null: false
     t.index ["customer_id"], name: "index_subscriptions_on_customer_id"
+    t.index ["expires_on"], name: "index_subscriptions_on_expires_on"
+    t.index ["token"], name: "index_subscriptions_on_token", unique: true
   end
 
   add_foreign_key "addresses", "subscriptions"
