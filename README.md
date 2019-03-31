@@ -106,7 +106,7 @@ curl -X POST \
 
 # Response:
 # HTTP Status: 400 Bad Request
-{"errors":{"credit_card":{"zip_code":["is missing"]},"plan":["is missing"]}}
+{"errors":{"params":{"credit_card":{"zip_code":["is missing"]},"plan":["is missing"]}}}
 ```
 
 ```shell

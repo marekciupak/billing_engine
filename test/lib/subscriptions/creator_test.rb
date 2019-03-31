@@ -20,12 +20,14 @@ module Subscriptions
 
       assert_equal(false, result.success?)
       assert_equal({
-        shipping_address: ['is missing'],
-        credit_card: {
-          expiration_month: ['is missing'],
-          expiration_year: ['is missing'],
-          cvv: ['is missing'],
-          zip_code: ['is missing'],
+        params: {
+          shipping_address: ['is missing'],
+          credit_card: {
+            expiration_month: ['is missing'],
+            expiration_year: ['is missing'],
+            cvv: ['is missing'],
+            zip_code: ['is missing'],
+          },
         },
       }, result.errors)
     end

@@ -12,7 +12,7 @@ module Subscriptions
         form = CreateForm.new(result)
         create_subscription(customer_id, form)
       else
-        Result.new(false, errors: result.errors)
+        Result.new(false, errors: {params: result.errors})
       end
     end
 

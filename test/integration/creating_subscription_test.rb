@@ -82,11 +82,13 @@ class CreatingSubscriptionTest < ActionDispatch::IntegrationTest
     assert_response(400)
     assert_equal({
       'errors' => {
-        'shipping_address' => {
-          'zip_code' => ['is missing'],
-          'city' => ['is missing'],
+        'params' => {
+          'shipping_address' => {
+            'zip_code' => ['is missing'],
+            'city' => ['is missing'],
+          },
+          'credit_card' => ['is missing'],
         },
-        'credit_card' => ['is missing'],
       },
     }, JSON.parse(response.body))
   end
