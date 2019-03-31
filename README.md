@@ -49,26 +49,50 @@ bin/rails server
 
 ## API
 
-### Create a subscription
+First, create a customer ID.
+Then register to any number of subscriptions.
+For automated renewal of subscriptions, run the appropriate script once a day.
 
-For id of the `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+### Create a customer account
+
+This endpoint will create a customer account's id for you, along with a secret `bearer_token` that you will use for
+authentication during other requests.
 
 ```shell
 # Valid request:
 curl -X POST \
   -H "Content-Type: application/json" \
+  http://localhost:3000/customers
+
+# Response:
+# HTTP Status: 201 Created
+{"customer":{"id":"d9fcbdca-94bf-4e7a-89e3-18d5567dd1e5"},"bearer_token":"eyJh..."}
+```
+
+### Create a subscription
+
+In `Authorization` header, send `bearer_token` assigned to your customer account.
+For `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+Each of your subscriptions will have an individual shipping address and an individually assigned credit card.
+
+```shell
+# Valid request:
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJh..." \
   -d '{"shipping_address":{"line1":"Bilbo Baggins","line2":"Bag End, at the end of Bagshot Row","zip_code":"12345","city":"Hobbiton"}, "credit_card":{"numer":"4242424242424242","expiration_month":"06","expiration_year":"2021","cvv":"123","zip_code":"12345"}, "plan":"bronze_box"}' \
   http://localhost:3000/subscriptions
 
 # Response:
 # HTTP Status: 201 Created
-{"subscription":{"id":4,"expires_on":"2019-04-30"}}
+{"subscription":{"id":4,"customer_id":"d9fcbdca-94bf-4e7a-89e3-18d5567dd1e5","expires_on":"2019-04-30"}}
 ```
 
 ```shell
 # Invalid request:
 curl -X POST \
   -H "Content-Type: application/json" \
+  -H "Authorization: Bearer eyJh..." \
   -d '{"shipping_address":{"line1":"Bilbo Baggins","line2":"Bag End, at the end of Bagshot Row","zip_code":"12345","city":"Hobbiton"}, "credit_card":{"numer":"4242424242424242","expiration_month":"06","expiration_year":"2021","cvv":"123"}}' \
   http://localhost:3000/subscriptions
 
@@ -87,6 +111,12 @@ curl -X POST \
 # Response in case of the network problem between the app and Fakepay (check the details of the error in the logs):
 # HTTP Status: 500 Internal Server Error
 {"errors":{"internal":"Something went wrong!"}}
+```
+
+```shell
+# Response in case of missing or invalid bearer_token:
+# HTTP Status: 403 Forbidden
+{"errors":{"authorization":"Invalid or blank bearer token!"}}
 ```
 
 ### Renew subscriptions

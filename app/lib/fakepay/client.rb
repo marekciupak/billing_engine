@@ -59,10 +59,10 @@ module Fakepay
     def handle_response(response)
       body = JSON.parse(response.body)
 
-      if response.status == 200 && body['success']
-        ::Result.new(true, data: body['token'])
+      if response.status == 200 && body.fetch('success')
+        ::Result.new(true, data: body.fetch('token'))
       else
-        error_code = body['error_code']
+        error_code = body.fetch('error_code')
 
         raise InvalidParams if error_code == 1_000_008
 

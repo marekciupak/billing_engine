@@ -16,6 +16,7 @@ gem 'bootsnap', '>= 1.1.0', require: false
 gem 'dry-validation'
 gem 'dry-struct'
 gem 'excon'
+gem 'jwt'
 
 group :development, :test do
   gem 'rubocop', require: false

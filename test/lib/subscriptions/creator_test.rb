@@ -9,10 +9,13 @@ module Subscriptions
 
     def test_invalid_params
       result = @subject.call(
-        credit_card: {
-          numer: '4242424242424242',
+        customer_id: 'customer_1',
+        params: {
+          credit_card: {
+            numer: '4242424242424242',
+          },
+          plan: 'bronze_box',
         },
-        plan: 'bronze_box',
       )
 
       assert_equal(false, result.success?)
@@ -35,20 +38,23 @@ module Subscriptions
 
       result = travel_to(Date.new(2019, 1, 1)) do
         @subject.call(
-          shipping_address: {
-            line1: 'Bilbo Baggins',
-            line2: 'Bag End, at the end of Bagshot Row',
-            zip_code: '12-345',
-            city: 'Hobbiton',
+          customer_id: 'customer_1',
+          params: {
+            shipping_address: {
+              line1: 'Bilbo Baggins',
+              line2: 'Bag End, at the end of Bagshot Row',
+              zip_code: '12-345',
+              city: 'Hobbiton',
+            },
+            credit_card: {
+              numer: '4242424242424242',
+              expiration_month: '06',
+              expiration_year: '2021',
+              cvv: '123',
+              zip_code: '12-345',
+            },
+            plan: 'bronze_box',
           },
-          credit_card: {
-            numer: '4242424242424242',
-            expiration_month: '06',
-            expiration_year: '2021',
-            cvv: '123',
-            zip_code: '12-345',
-          },
-          plan: 'bronze_box',
         )
       end
 
@@ -71,20 +77,23 @@ module Subscriptions
       )
 
       result = @subject.call(
-        shipping_address: {
-          line1: 'Bilbo Baggins',
-          line2: 'Bag End, at the end of Bagshot Row',
-          zip_code: '12-345',
-          city: 'Hobbiton',
+        customer_id: 'customer_1',
+        params: {
+          shipping_address: {
+            line1: 'Bilbo Baggins',
+            line2: 'Bag End, at the end of Bagshot Row',
+            zip_code: '12-345',
+            city: 'Hobbiton',
+          },
+          credit_card: {
+            numer: '4242424242424242',
+            expiration_month: '06',
+            expiration_year: '2021',
+            cvv: '123',
+            zip_code: '12-345',
+          },
+          plan: 'bronze_box',
         },
-        credit_card: {
-          numer: '4242424242424242',
-          expiration_month: '06',
-          expiration_year: '2021',
-          cvv: '123',
-          zip_code: '12-345',
-        },
-        plan: 'bronze_box',
       )
 
       assert_equal(false, result.success?)

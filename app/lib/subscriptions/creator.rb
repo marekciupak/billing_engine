@@ -5,12 +5,12 @@ module Subscriptions
       @payment_gateway_client = payment_gateway_client
     end
 
-    def call(params)
+    def call(customer_id:, params:)
       result = CreateFormSchema.call(params)
 
       if result.success?
         form = CreateForm.new(result)
-        create_subscription(form)
+        create_subscription(customer_id, form)
       else
         Result.new(false, errors: result.errors)
       end
@@ -18,11 +18,11 @@ module Subscriptions
 
     private
 
-    def create_subscription(form)
+    def create_subscription(customer_id, form)
       result = charge(form)
 
       if result.success?
-        subscription = store_subscription_in_db(form: form, token: result.data)
+        subscription = store_subscription_in_db(customer_id: customer_id, form: form, token: result.data)
         Result.new(true, data: subscription)
       else
         Result.new(false, errors: result.errors)
@@ -42,9 +42,10 @@ module Subscriptions
       )
     end
 
-    def store_subscription_in_db(form:, token:)
+    def store_subscription_in_db(customer_id:, form:, token:)
       ActiveRecord::Base.transaction do
         subscription = Subscription.create!(
+          customer_id: customer_id,
           plan: form.plan.to_sym,
           token: token,
           expires_on: Time.zone.today.next_month,
