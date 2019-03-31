@@ -78,7 +78,9 @@ curl -X POST \
 ### Create a subscription
 
 In `Authorization` header, send `bearer_token` assigned to your customer account.
+
 For `plan`, you can choose: `bronze_box`, `silver_box` or `gold_box`.
+
 Each of your subscriptions will have an individual shipping address and an individually assigned credit card.
 
 ```shell
