@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
-  resources :customers, only: :create
-  resources :subscriptions, only: :create
+  scope module: :v1 do
+    resources :customers, only: :create
+    resources :subscriptions, only: :create
+  end
 end
